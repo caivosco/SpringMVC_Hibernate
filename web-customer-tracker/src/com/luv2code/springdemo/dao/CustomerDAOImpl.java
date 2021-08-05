@@ -17,18 +17,37 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Override
-	@Transactional
+	@Override	
 	public List<Customer> getCustomers() {
 		// TODO Auto-generated method stub
 		
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
+		Query<Customer> theQuery = currentSession.createQuery("from Customer order by lastName", Customer.class);
 		
 		List<Customer> customers = theQuery.getResultList();
 			
 		return customers;
+	}
+
+	@Override
+	public void saveCustomer(Customer theCustomer) {
+		// TODO Auto-generated method stub
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		currentSession.saveOrUpdate(theCustomer);
+	}
+
+	@Override
+	public Customer getCustomer(int theId) {
+		// TODO Auto-generated method stub
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Customer theCustomer = currentSession.get(Customer.class, theId);
+		
+		return theCustomer;
 	}
 
 }
